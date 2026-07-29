@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trackster — Apple Direction</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f5f5f7;
+    --surface:  #ffffff;
+    --surface2: #f0f0f3;
+    --border:   rgba(0,0,0,0.08);
+    --text:     #1d1d1f;
+    --muted:    #6e6e73;
+    --muted2:   #aeaeb2;
+    --accent:   #0071e3;
+    --accent-h: #0077ed;
+    --red:      #ff3b30;
+    --green:    #34c759;
+    --sans:     -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+    --mono:     "SF Mono", ui-monospace, monospace;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    flex-shrink: 0;
+  }
+
+  .logo {
+    padding: 0 20px 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .logo-name {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.2px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--muted2);
+    padding: 0 20px;
+    margin-bottom: 4px;
+    margin-top: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 0;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    transition: color 0.15s;
+  }
+  .nav-item:hover { color: var(--text); }
+  .nav-item.active {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .nav-item.active .nav-dot { background: var(--accent); }
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted2);
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0071e3, #34aadc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .user-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .user-role { font-size: 11px; color: var(--muted); }
+
+  /* ── Main ── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 48px 52px;
+  }
+
+  .page-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .page-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+
+  /* ── Stat cards ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.green  { color: var(--green); }
+  .stat-value.red    { color: var(--red); }
+  .stat-meta { font-size: 11px; color: var(--muted2); }
+
+  /* ── Net banner ── */
+  .net-banner {
+    background: var(--text);
+    color: #fff;
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .net-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+  .net-formula { font-size: 11px; color: rgba(255,255,255,0.35); font-family: var(--mono); }
+  .net-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    color: #fff;
+  }
+  .copy-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    border: none;
+    margin-left: 16px;
+    transition: background 0.15s;
+  }
+  .copy-pill:hover { background: rgba(255,255,255,0.2); }
+
+  /* ── Table ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+  .table-card {
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--muted2);
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  th.right, td.right { text-align: right; }
+  td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  .code-badge {
+    display: inline-block;
+    background: rgba(0,113,227,0.08);
+    color: var(--accent);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--mono);
+  }
+  .td-muted { color: var(--muted2); }
+
+  /* ── Period indicator ── */
+  .period-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(52,199,89,0.1);
+    border: 1px solid rgba(52,199,89,0.25);
+    border-radius: 20px;
+    font-size: 12px;
+    color: #248a3d;
+    font-weight: 500;
+  }
+  .dot-green { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  /* ── Close period btn ── */
+  .close-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: none;
+    border: 1px solid rgba(255,59,48,0.3);
+    border-radius: 8px;
+    color: var(--red);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 24px;
+    font-family: var(--sans);
+    transition: background 0.15s;
+  }
+  .close-btn:hover { background: rgba(255,59,48,0.06); }
+
+  /* ── Lang toggle ── */
+  .lang-toggle {
+    display: inline-flex;
+    background: var(--surface2);
+    border-radius: 7px;
+    padding: 2px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .lang-opt {
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    font-family: var(--mono);
+  }
+  .lang-opt.on  { background: #fff; color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .lang-opt.off { background: transparent; color: var(--muted2); }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-name">trackster</div>
+    <div class="logo-sub">VAT / MOMS</div>
+  </div>
+
+  <div class="nav-label">Navigation</div>
+  <button class="nav-item active"><span class="nav-dot"></span> Home</button>
+  <button class="nav-item"><span class="nav-dot"></span> New Entry</button>
+  <button class="nav-item"><span class="nav-dot"></span> Entries</button>
+  <button class="nav-item"><span class="nav-dot"></span> Export</button>
+
+  <div class="nav-label" style="margin-top:20px;">History</div>
+  <button class="nav-item"><span class="nav-dot"></span> Archive</button>
+
+  <div class="sidebar-footer">
+    <div class="lang-toggle">
+      <button class="lang-opt on">DA</button>
+      <button class="lang-opt off">EN</button>
+    </div>
+    <div class="user-row">
+      <div class="avatar">T</div>
+      <div>
+        <div class="user-name">theresa</div>
+        <div class="user-role">Quarterly</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="main">
+  <div class="page-eyebrow">Current Period · Q1 2024</div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+    <h1 class="page-title">Home</h1>
+    <div class="period-pill">
+      <span class="dot-green"></span> Active Period
+    </div>
+  </div>
+  <p class="page-sub">VAT summary · jan. 2024 – mar. 2024</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Period</div>
+      <div class="stat-value" style="font-size:18px;letter-spacing:-0.2px;">jan – mar 2024</div>
+      <div class="stat-meta">Quarterly</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Entries</div>
+      <div class="stat-value">24</div>
+      <div class="stat-meta">recorded transactions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Output VAT</div>
+      <div class="stat-value red">18.750,00</div>
+      <div class="stat-meta">A + B + C</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Input VAT</div>
+      <div class="stat-value green">4.312,50</div>
+      <div class="stat-meta">D + E</div>
+    </div>
+  </div>
+
+  <div class="net-banner">
+    <div>
+      <div class="net-label">Net Moms Payable (Momstilsvar)</div>
+      <div class="net-formula">(A + B + C) − (D + E)</div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <div class="net-value">14.437,50 kr</div>
+      <button class="copy-pill">⎘ copy</button>
+    </div>
+  </div>
+
+  <div class="section-label">Output VAT</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+          <th class="right">Entries</th>
+          <th class="right">Total (DKK)</th>
+          <th class="right"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-badge">A</span></td>
+          <td>
+            <div style="font-size:13px;">Moms af varesalg og ydelser</div>
+            <div style="font-size:11px;color:#6e6e73;margin-top:1px;">Udgående moms med 25% sats</div>
+          </td>
+          <td class="right td-muted">12</td>
+          <td class="right" style="font-weight:600;">15.000,00</td>
+          <td class="right"><button style="background:none;border:none;color:#aeaeb2;font-size:11px;cursor:pointer;">copy</button></td>
+        </tr>
+        <tr>
+          <td><span class="code-badge">B</span></td>
+          <td>
+            <div style="font-size:13px;">Moms af EU-varekøb</div>
+            <div style="font-size:11px;color:#6e6e73;margin-top:1px;">Erhvervelsesmoms på varer fra EU</div>
+          </td>
+          <td class="right td-muted">3</td>
+          <td class="right" style="font-weight:600;">2.500,00</td>
+          <td class="right"><button style="background:none;border:none;color:#aeaeb2;font-size:11px;cursor:pointer;">copy</button></td>
+        </tr>
+        <tr>
+          <td><span class="code-badge">C</span></td>
+          <td>
+            <div style="font-size:13px;">Moms af køb af ydelser fra udlandet</div>
+            <div style="font-size:11px;color:#6e6e73;margin-top:1px;">Omvendt betalingspligt</div>
+          </td>
+          <td class="right td-muted">1</td>
+          <td class="right" style="font-weight:600;">1.250,00</td>
+          <td class="right"><button style="background:none;border:none;color:#aeaeb2;font-size:11px;cursor:pointer;">copy</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label">Input VAT</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+          <th class="right">Entries</th>
+          <th class="right">Total (DKK)</th>
+          <th class="right"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-badge">D</span></td>
+          <td>
+            <div style="font-size:13px;">Købsmoms</div>
+            <div style="font-size:11px;color:#6e6e73;margin-top:1px;">Indgående moms på indkøb</div>
+          </td>
+          <td class="right td-muted">7</td>
+          <td class="right" style="font-weight:600;">3.500,00</td>
+          <td class="right"><button style="background:none;border:none;color:#aeaeb2;font-size:11px;cursor:pointer;">copy</button></td>
+        </tr>
+        <tr>
+          <td><span class="code-badge">E</span></td>
+          <td>
+            <div style="font-size:13px;">Importmoms</div>
+            <div style="font-size:11px;color:#6e6e73;margin-top:1px;">Moms ved import fra lande uden for EU</div>
+          </td>
+          <td class="right td-muted">1</td>
+          <td class="right" style="font-weight:600;">812,50</td>
+          <td class="right"><button style="background:none;border:none;color:#aeaeb2;font-size:11px;cursor:pointer;">copy</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="close-btn">Close Tax Period</button>
+</main>
+
+</body>
+</html>
