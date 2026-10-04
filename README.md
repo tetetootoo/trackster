@@ -1,21 +1,72 @@
 # Trackster
 
-A VAT/expense tracker for managing accounting periods, entries, and exports.
+![Trackster dashboard](docs/trackster-dashboard.png)
 
-## Running locally
+A VAT and expense tracker for managing accounting periods, expenses, and exports in one place.
 
-Open two terminals:
+I built Trackster to simplify the process of keeping track of business expenses and preparing accounting data without relying on scattered spreadsheets, receipts, and manual calculations.
 
-**Server**
-```
+## What it does
+
+Trackster provides a structured workflow for:
+
+- Managing accounting periods
+- Recording and organizing expenses
+- Tracking VAT
+- Keeping financial entries in one place
+- Reviewing period totals
+- Exporting receipts as merged PDFs by VAT category
+
+The focus is deliberately practical: make recurring administrative work easier to understand, maintain, and hand over for accounting.
+
+## Product approach
+
+Rather than treating expenses as isolated entries, Trackster organizes them around accounting periods and the workflow they belong to.
+
+The interface is designed to keep the information dense enough to be useful while making totals, individual entries, and actions easy to scan.
+
+I designed and developed the product end-to-end, from the data structure and application logic to the interface and implementation.
+
+## Development
+
+The tracked application source is a React frontend in `trackster.jsx`. It stores data through the host-provided `window.storage` API when available, with browser `localStorage` as a fallback.
+
+### Built with
+
+Verified from the tracked application source:
+
+- React with hooks
+- JavaScript / JSX
+- CSS with custom properties
+- Browser Web Storage (`localStorage`)
+- pdf-lib 1.17.1 for merging receipts and exporting PDFs
+
+### Running locally
+
+The existing project notes describe a separate frontend and server application, run in two terminals:
+
+#### Server
+
+```sh
 npm run server:dev
 ```
 
-**Frontend**
-```
+#### Frontend
+
+```sh
 npm run dev
 ```
 
+These commands refer to the full application setup. This repository does not currently include a `package.json`, server source, or build configuration, so the commands cannot be verified or run from this checkout as provided.
+
+## Status
+
+Trackster is an independent software project and remains under active development.
+
+## More work
+
+See more of my design and software work at [halfodd.com](https://www.halfodd.com/).
+
 ## License
 
-Proprietary — all rights reserved. See [LICENSE](LICENSE).
+Proprietary - all rights reserved. See [LICENSE](LICENSE).
