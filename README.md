@@ -41,23 +41,9 @@ Verified from the tracked application source:
 - Browser Web Storage (`localStorage`)
 - pdf-lib 1.17.1 for merging receipts and exporting PDFs
 
-### Running locally
+### Source availability
 
-The existing project notes describe a separate frontend and server application, run in two terminals:
-
-#### Server
-
-```sh
-npm run server:dev
-```
-
-#### Frontend
-
-```sh
-npm run dev
-```
-
-These commands refer to the full application setup. This repository does not currently include a `package.json`, server source, or build configuration, so the commands cannot be verified or run from this checkout as provided.
+This repository contains the tracked React frontend source in `trackster.jsx` for review. The application setup and build configuration are not included, so this checkout is not configured to run locally.
 
 ## Status
 
